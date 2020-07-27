@@ -1,1 +1,3 @@
-this is a test fileopen -e README.md 
+this is a test fileopen -e README.md
+This is second test；
+这是第二次测试 
