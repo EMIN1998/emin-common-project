@@ -5,4 +5,3 @@ type UpdateLanguageStatusBatchReq struct {
 	Language   string `json:"language"`
 	Status     int64  `json:"status"`
 }
-

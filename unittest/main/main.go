@@ -1,6 +1,6 @@
 package main
 
-import "time"
+import "fmt"
 
 // func readDataFromXlsx() ([]*UpdateLanguageStatusBatchReq, error) {
 // 	importItems := make([]*UpdateLanguageStatusBatchReq, 0)
@@ -67,49 +67,74 @@ import "time"
 // 	return importItems, nil
 // }
 
-func channelTest1(ch chan string, msg string) {
-	print("start channelTest1")
-	go func() {
-		time.Sleep(6*time.Second)
-		ch <- msg
-		return
-	}()
+type ContactConfig struct {
+	FlagCountry     bool `json:"flag_country" db:"flag_country"`
+	FlagEnglish     bool `json:"flag_english" db:"flag_english"`
+	FlagMailbox     bool `json:"flag_mailbox" db:"flag_mailbox"`
+	FlagLastname    bool `json:"flag_lastname" db:"flag_lastname"`
+	FlagFirstname   bool `json:"flag_firstname" db:"flag_firstname"`
+	FlagCountryCode bool `json:"flag_country_code" db:"flag_country_code"`
+	FlagPhoneNumber bool `json:"flag_phone_number" db:"flag_phone_number"`
 }
 
-func channelTest2(ch chan string) {
-	timeOut := time.NewTimer(3 * time.Second).C
-	go func() {
-		flag := false
-		for {
-			select {
-			case <- timeOut:
-				print("\n///////////////////time out //////////////////")
-				return
-			case msg := <-ch:
-				if msg == "done" {
-					print("\n work done ")
-					flag = true
-				} else {
-					print( "no done ")
-				}
-			default:
-				print(" wait for msg")
-			}
+type CategoryContactConfig struct {
+	CategoryId int64 `json:"category_id" db:"category_id"`
+	ContactConfig
+}
 
-			if flag {
-				print("\n<<<<<<<<<<<<<<for over >>>>>>>>>>>>>>>>>\n")
-				break
-			}
+// func testfunc() {
+// 	var str string
+// 	str = "{\n    \"category_id\": 15,\n    \"flag_country\": true,\n    \"flag_english\": true,\n    \"flag_mailbox\": true,\n    \"flag_lastname\": true,\n    \"flag_firstname\": true,\n    \"flag_country_code\": true,\n    \"flag_phone_number\": true\n}"
+//
+// 	var tmp CategoryContactConfig
+// 	err := json.Unmarshal([]byte(str), &tmp)
+// 	if err != nil {
+// 		fmt.Print(err)
+// 	}
+//
+// 	fmt.Print(tmp)
+// }
+// func ToIdString(ids []int64) string {
+// 	stList := make([]string, 0)
+// 	for _, id := range ids {
+// 		st := fmt.Sprintf("%d", id)
+// 		stList = append(stList, st)
+// 	}
+//
+// 	str := strings.Join(stList, ",")
+// 	return str
+// }
+
+func InInt64Slice(item int64, slice []int64) bool {
+	for _, v := range slice {
+		if item == v {
+			return true
 		}
-		print("\n all done ")
-	}()
+	}
+	return false
 }
+
+var allSubCategoryId = []int64{1, 2, 4, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 21, 22, 168, 171, 177, 179, 185, 187, 192, 194, 198, 206, 211, 220, 223, 228, 230, 232, 249, 251, 254, 256, 258, 260, 263, 266, 275, 279, 282, 287, 298, 300, 303, 306, 309, 311, 313, 317, 319, 321, 323, 325, 329, 331, 333, 337, 341, 343, 345, 353, 356, 358, 360, 362, 364, 366, 369, 372, 374, 376, 378, 380, 382, 384, 386, 388, 390, 392, 394, 396, 398, 400, 402, 404, 406, 409, 410, 413, 415, 426, 439, 452, 523, 525, 527, 529, 531, 534, 535, 540, 542, 551, 552, 558}
+
+var type1 = []int64{1, 2, 4, 7, 8, 9, 14, 15, 16, 20, 21, 22, 187, 192, 206, 211, 220, 223, 228, 230, 232, 249, 251, 254, 256, 258, 260, 263, 266, 275, 279, 282, 287, 300, 303, 306, 309, 311, 313, 331, 356, 360}
+
+var type2 = []int64{1, 2, 4, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 21, 22, 168, 171, 177, 179, 185, 187, 192, 194, 198, 206, 211, 220, 223, 228, 230, 232, 249, 251, 254, 256, 258, 260, 263, 266, 275, 279, 282, 287, 298, 300, 303, 306, 309, 311, 313, 317, 319, 321, 323, 325, 329, 331, 333, 341, 343, 345, 353, 356, 358, 360, 364}
+
+var type3 = []int64{1, 2, 4, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 21, 22, 168, 171, 177, 179, 187, 194, 206, 220, 223, 228, 230, 232, 251, 263, 266, 279, 282, 287, 298, 300, 303, 306, 309, 311, 313, 317, 319, 321, 323, 325, 331, 413, 415, 523}
 
 func main() {
-	ch := make(chan string)
-	channelTest2(ch)
+	target := make([]int64, 0)
+	for _, v := range allSubCategoryId {
+		if !InInt64Slice(v, type3) {
+			if InInt64Slice(v, type1) && InInt64Slice(v, type2) {
+				target = append(target, v)
+			}
+		}
 
-	channelTest1(ch, "done")
-	time.Sleep(3*time.Second)
-	print("======== main over ===========")
+		if !InInt64Slice(v, type2) && !InInt64Slice(v, type1) && !InInt64Slice(v, type3) {
+			target = append(target, v)
+		}
+	}
+
+	fmt.Print(target)
 }
