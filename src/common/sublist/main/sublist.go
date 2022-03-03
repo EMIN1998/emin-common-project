@@ -1,39 +1,82 @@
 package main
 
-import "fmt"
+import (
+	"common/utils"
+	"strings"
+)
 
 // 最长回文字串
-func palindromeMax(s string) (string, int) {
-	stateMap := make(map[int]map[int]bool)
-	for t := 0; t <= len(s); t++ {
-		stateMap[t] = make(map[int]bool)
+// 动态规划
+func longestPalindrome(s string) string {
+	str := strings.Split(s, "")
+	if len(str) <= 1 {
+		return s
 	}
 
-	var maxLen, index int
-	for j := 0; j < len(s); j++ {
-		for i := 0; i <= len(s)-1 && i < j; i++ {
-			if s[i] != s[j] {
-				stateMap[i][j] = false
+	statusMap := make([][]bool, len(s))
+
+	for index, _ := range str {
+		statusMap[index] = make([]bool, len(s))
+		statusMap[index][index] = true
+	}
+
+	maxLen, preIdx := 1, 0
+
+	for subLen := 2; subLen <= len(str); subLen++ {
+		for idx, _ := range str {
+			idy := subLen + idx - 1
+
+			if idy > len(str)-1 {
+				break
+			}
+
+			if str[idx] != str[idy] {
+				statusMap[idx][idy] = false
 			} else {
-				if j-i < 3 {
-					stateMap[i][j] = true
+				if idy-idx < 3 {
+					statusMap[idx][idy] = true
 				} else {
-					// 这里会用到[i+1][j-1],所以把j放在外循环的话使用[i+1][j-1]肯定是有值的，因为外循环在j-1是就已经赋值过了
-					stateMap[i][j] = stateMap[i+1][j-1]
+					statusMap[idx][idy] = statusMap[idx+1][idy-1]
 				}
 			}
 
-			if stateMap[i][j] && j-i+1 > maxLen {
-				maxLen = j - i + 1
-				index = i
+			if statusMap[idx][idy] && idy-idx+1 > maxLen {
+				maxLen = idy - idx + 1
+				preIdx = idx
 			}
 		}
 	}
 
-	return s[index : index+maxLen], maxLen
+	return strings.Join(str[preIdx:preIdx+maxLen], "")
 }
 
-func main() {
-	var s = "babcaaccabab"
-	fmt.Print(palindromeMax(s))
+// 中心扩展算法
+func longestPalindrome1(s string) string {
+	defer utils.TimeCost() // 耗时
+	start, end := 0, 0
+	for i, _ := range s {
+		left1, right1 := expendAndIndex(s, i, i)
+		left2, right2 := expendAndIndex(s, i, i+1)
+
+		if right1-left1 > end-start {
+			start, end = left1, right1
+		}
+
+		if right2-left2 > end-start {
+			start, end = left2, right2
+		}
+
+	}
+
+	return s[start : end+1]
+}
+
+func expendAndIndex(s string, i int, i2 int) (int, int) {
+	l := len(s)
+	for i >= 0 && i2 < l && s[i] == s[i2] {
+		i--
+		i2++
+	}
+
+	return i - 1, i2 + 1
 }

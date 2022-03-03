@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"bitbucket.org/klook/klook-libs/src/klook.libs/locale"
 	"github.com/tealeg/xlsx"
 )
 
@@ -218,7 +217,7 @@ func readXslx() interface{} {
 			continue
 		}
 
-		textMap[locale.EN_US] = r[2]
+		textMap["en_US"] = r[2]
 		item := NoPriceResource{
 			id,
 			textMap,
