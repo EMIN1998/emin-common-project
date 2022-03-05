@@ -38,7 +38,7 @@ func longestConsecutive(nums []int) int {
 }
 
 // 最长递增子序列
-// dp 为以第 ii 个数字结尾的最长上升子序列的长度
+// dp 为以第 i 个数字结尾的最长上升子序列的长度
 func lengthOfLIS(nums []int) int {
 	if len(nums) < 2 {
 		return 1
