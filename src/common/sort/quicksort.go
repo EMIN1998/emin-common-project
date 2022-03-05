@@ -1,4 +1,4 @@
-package main
+package sort
 
 func quicksort(req *[]int) {
 	if len(*req) == 1 || len(*req) == 0 {

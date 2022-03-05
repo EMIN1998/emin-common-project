@@ -1,4 +1,4 @@
-package main
+package sublist
 
 import (
 	"common/utils"
@@ -51,7 +51,7 @@ func longestPalindrome(s string) string {
 }
 
 // 中心扩展算法
-func longestPalindrome1(s string) string {
+func longestPalindromeV1(s string) string {
 	defer utils.TimeCost() // 耗时
 	start, end := 0, 0
 	for i, _ := range s {

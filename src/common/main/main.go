@@ -1,10 +1,6 @@
 package main
 
-import (
-	"common/lru"
-	"encoding/json"
-	"fmt"
-)
+import "common/linklist"
 
 /**
  *
@@ -64,37 +60,44 @@ func main() {
 	//str := longestPalindrome1(s)
 	//fmt.Println(str)
 
-	op := "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\",\"get\",\"get\"]"
-	pa := "[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]"
-
-	opList := make([]string, 0)
-	paList := make([][]int, 0)
-
-	err := json.Unmarshal([]byte(op), &opList)
-	err = json.Unmarshal([]byte(pa), &paList)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	var cache lru.LRUCache
-	resp := make([]int, 0)
-	for idx, o := range opList {
-		switch o {
-		case cacheInit:
-			cache = lru.Constructor(paList[idx][0])
-		case put:
-			cache.Put(paList[idx][0], paList[idx][1])
-		case get:
-			resp = append(resp, cache.Get(paList[idx][0]))
-		}
-	}
-
-	for _, v := range resp {
-		if v == -1 {
-			fmt.Print("null")
-		} else {
-			fmt.Print("%d", v)
-		}
-	}
+	head := linklist.CreateLinkList([]int{4, 2, 1, 3})
+	head.PrintLinkList()
+	resp := linklist.SortList(head)
+	resp.PrintLinkList()
 	return
+}
+
+// 最长子序列
+func longestConsecutive(nums []int) int {
+	valueSet := make(map[int]struct{})
+	for _, v := range nums {
+		valueSet[v] = struct{}{}
+	}
+
+	longestLen := 0
+	for k, _ := range valueSet {
+		if _, ok := valueSet[k-1]; ok {
+			continue
+		}
+
+		cur, currLen := k, 0
+		for {
+			if _, ok := valueSet[cur]; !ok {
+				if longestLen > len(valueSet)/2 {
+					return longestLen
+				}
+
+				break
+			}
+
+			cur++
+			currLen++
+
+			if currLen > longestLen {
+				longestLen = currLen
+			}
+		}
+	}
+
+	return longestLen
 }

@@ -1,7 +1,6 @@
-package main
+package sort
 
-import "fmt"
-
+// MergeSort 归并排序
 func MergeSort(request []int) []int {
 	if len(request) == 0 || len(request) == 1 {
 		return request
@@ -38,11 +37,4 @@ func MergeSort(request []int) []int {
 	}
 
 	return result
-}
-
-func main() {
-	var req = []int{5, 2, 6, 9, 7, 3, 4, 8}
-	res := MergeSort(req)
-	fmt.Print(res)
-
 }
