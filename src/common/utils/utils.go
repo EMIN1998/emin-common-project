@@ -12,3 +12,10 @@ func TimeCost() func() {
 		fmt.Printf("time cost = %v\n", tc)
 	}
 }
+
+func IF(condition bool, trueValue interface{}, falseValue interface{}) interface{} {
+	if condition {
+		return trueValue
+	}
+	return falseValue
+}
