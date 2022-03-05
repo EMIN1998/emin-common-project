@@ -5,7 +5,6 @@ package sort
 // 右子节点：2i+2
 // 父节点：(i-1)/2
 // 最后一个非叶子节点：最后一个节点的父节点
-//type ArrayPoint *[]int
 
 func swap(arr *[]int, i, j int) {
 	if i < 0 || j < 0 || i == j {
@@ -26,11 +25,11 @@ func MaxHeapify(nums []int, i int) []int {
 	right := 2*i + 2
 
 	max := i
-	if left < len(nums) && nums[i] < nums[left] {
+	if left < len(nums) && nums[max] < nums[left] {
 		max = left
 	}
 
-	if right < len(nums) && nums[i] < nums[right] {
+	if right < len(nums) && nums[max] < nums[right] {
 		max = right
 	}
 
@@ -53,17 +52,39 @@ func buildHeap(nums []int) []int {
 	return nums
 }
 
-func heapSort(nums []int) []int {
+// HeapSort 堆排序
+func HeapSort(nums []int) []int {
 	if len(nums) < 2 {
 		return nums
 	}
 
 	resp := make([]int, 0)
-	for len(nums) == 0 {
+
+	numsLen := len(nums)
+	for numsLen != 0 {
 		nums = buildHeap(nums)
 		resp = append(resp, nums[0])
 		nums = nums[1:]
+
+		numsLen = len(nums)
 	}
 
 	return resp
+}
+
+// FindKthLargest 找出第K大的数
+func FindKthLargest(nums []int, k int) int {
+	if len(nums) < 2 {
+		return nums[0]
+	}
+
+	nums = buildHeap(nums)
+	var i int
+	for i < k-1 {
+		nums = nums[1:]
+		nums = buildHeap(nums)
+		i++
+	}
+
+	return nums[0]
 }

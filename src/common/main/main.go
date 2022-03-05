@@ -1,6 +1,9 @@
 package main
 
-import "common/linklist"
+import (
+	"common/sort"
+	"fmt"
+)
 
 /**
  *
@@ -41,63 +44,10 @@ func countBits(n int) []int {
 	return bits
 }
 
-const (
-	cacheInit = "LRUCache"
-	put       = "put"
-	get       = "get"
-)
-
 func main() {
-	//var req = []int{9, -12, 1, 4, -1, 5, -2}
-	//res := FindGreatestSumOfSubArray(req)
-	//fmt.Print(res)
-
-	//res := countBits(5)
-	//fmt.Println(res)
-	//defer timeCost()()
-	//
-	//var s = "cacdcae"
-	//str := longestPalindrome1(s)
-	//fmt.Println(str)
-
-	head := linklist.CreateLinkList([]int{4, 2, 1, 3})
-	head.PrintLinkList()
-	resp := linklist.SortList(head)
-	resp.PrintLinkList()
+	var param = []int{3, 2, 1, 5, 6, 4}
+	resp := sort.FindKthLargest(param, 2)
+	//resp := sort.HeapSort(param)
+	fmt.Print(resp)
 	return
-}
-
-// 最长子序列
-func longestConsecutive(nums []int) int {
-	valueSet := make(map[int]struct{})
-	for _, v := range nums {
-		valueSet[v] = struct{}{}
-	}
-
-	longestLen := 0
-	for k, _ := range valueSet {
-		if _, ok := valueSet[k-1]; ok {
-			continue
-		}
-
-		cur, currLen := k, 0
-		for {
-			if _, ok := valueSet[cur]; !ok {
-				if longestLen > len(valueSet)/2 {
-					return longestLen
-				}
-
-				break
-			}
-
-			cur++
-			currLen++
-
-			if currLen > longestLen {
-				longestLen = currLen
-			}
-		}
-	}
-
-	return longestLen
 }

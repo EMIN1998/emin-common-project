@@ -7,6 +7,18 @@ type ListNode struct {
 	Next *ListNode
 }
 
+func (l *ListNode) PrintLinkList() {
+	resp := make([]int, 0)
+	next := l
+	for next != nil {
+		resp = append(resp, next.Val)
+		next = next.Next
+	}
+
+	fmt.Print(resp)
+}
+
+// CreateLinkList 创建链表
 func CreateLinkList(param []int) *ListNode {
 	head := &ListNode{
 		Val:  0,
@@ -25,17 +37,7 @@ func CreateLinkList(param []int) *ListNode {
 	return head.Next
 }
 
-func (l *ListNode) PrintLinkList() {
-	resp := make([]int, 0)
-	next := l
-	for next != nil {
-		resp = append(resp, next.Val)
-		next = next.Next
-	}
-
-	fmt.Print(resp)
-}
-
+// SortList 链表归并排序
 func SortList(root *ListNode) *ListNode {
 	return sort(root)
 }
