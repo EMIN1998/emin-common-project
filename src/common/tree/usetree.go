@@ -88,7 +88,7 @@ func kthSmallest(root *TreeNode, k int) int {
 	}
 }
 
-// LevelOrder 深度优先遍历BFS
+// LevelOrder 广度优先遍历BFS
 func LevelOrder(root *TreeNode) [][]int {
 	if root == nil {
 		return [][]int{}
