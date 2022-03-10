@@ -46,7 +46,7 @@ func countBits(n int) []int {
 
 func main() {
 	var param = []int{3, 2, 1, 5, 6, 4}
-	resp := sort.FindKthLargest(param, 2)
+	resp := sort.InsertSort(param)
 	//resp := sort.HeapSort(param)
 	fmt.Print(resp)
 	return

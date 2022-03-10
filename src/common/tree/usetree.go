@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func test_main() {
+func Test_main() {
 	root := CreateTreeNode([]int{1, 2, 3, 4, 5})
 	res := diameterOfBinaryTree(root)
 	fmt.Println(res)
@@ -64,4 +64,26 @@ func lowestCommonAncestor(root *TreeNode, o1 int, o2 int) int {
 	}
 
 	return root.Val // 找到了某个目标节点，返回左子树和右子树的公共父节点
+}
+
+// kthSmallest 中序遍历，找出第K小的节点
+func kthSmallest(root *TreeNode, k int) int {
+	stack := make([]*TreeNode, 0)
+
+	for {
+		for root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		}
+
+		root = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+
+		k--
+		if k == 0 {
+			return root.Val
+		}
+
+		root = root.Right
+	}
 }

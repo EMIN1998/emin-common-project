@@ -60,3 +60,28 @@ func lengthOfLIS(nums []int) int {
 
 	return max
 }
+
+// LengthOfLongestSubstring 最长不重复的子序列的长度--滑动窗口
+func LengthOfLongestSubstring(s string) int {
+	maxLen := 0
+	var left, right int
+	windowMap := make(map[byte]int)
+	n := len(s)
+	for right < n {
+		// rightValueIndex := -1
+		if val, ok := windowMap[s[right]]; ok {
+			if val >= left {
+				left = val + 1
+			}
+		}
+
+		if maxLen < right-left+1 {
+			maxLen = right - left + 1
+		}
+
+		windowMap[s[right]] = right
+		right++
+	}
+
+	return maxLen
+}
