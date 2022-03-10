@@ -7,7 +7,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-// BFS的数组翻译为二叉树
+// CreateTreeNode BFS的数组翻译为二叉树
 func CreateTreeNode(nums []int) *TreeNode {
 	var root *TreeNode
 	var queue []*TreeNode

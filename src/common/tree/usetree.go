@@ -87,3 +87,32 @@ func kthSmallest(root *TreeNode, k int) int {
 		root = root.Right
 	}
 }
+
+// LevelOrder 深度优先遍历BFS
+func LevelOrder(root *TreeNode) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+
+	resp := make([][]int, 0)
+	level := []*TreeNode{root}
+	for i := 0; len(level) > 0; i++ {
+		resp = append(resp, []int{})
+		nextLevel := make([]*TreeNode, 0)
+		for _, node := range level {
+			resp[i] = append(resp[i], node.Val)
+
+			if node.Left != nil {
+				nextLevel = append(nextLevel, node.Left)
+			}
+
+			if node.Right != nil {
+				nextLevel = append(nextLevel, node.Right)
+			}
+		}
+
+		level = nextLevel
+	}
+
+	return resp
+}

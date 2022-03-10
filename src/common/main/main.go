@@ -1,7 +1,7 @@
 package main
 
 import (
-	"common/sort"
+	"common/tree"
 	"fmt"
 )
 
@@ -45,8 +45,9 @@ func countBits(n int) []int {
 }
 
 func main() {
-	var param = []int{3, 2, 1, 5, 6, 4}
-	resp := sort.InsertSort(param)
+	var param = []int{3, 2, 1, 5, 6, 4, 8}
+	root := tree.CreateTreeNode(param)
+	resp := tree.LevelOrder(root)
 	//resp := sort.HeapSort(param)
 	fmt.Print(resp)
 	return
