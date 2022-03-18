@@ -2,6 +2,7 @@ package tree
 
 import (
 	"fmt"
+	"math"
 )
 
 func Test_main() {
@@ -115,4 +116,40 @@ func LevelOrder(root *TreeNode) [][]int {
 	}
 
 	return resp
+}
+
+// 判断是否为合格的平衡二叉树
+func isValidBST(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+
+	return isBST(root, math.MaxInt64, math.MinInt64)
+}
+
+func isBST(root *TreeNode, max, min int) bool {
+	if root == nil {
+		return true
+	}
+
+	left := isBST(root.Left, root.Val, min)
+	right := isBST(root.Right, max, root.Val)
+
+	if !(left && right) {
+		return false
+	}
+
+	if root.Left != nil {
+		if root.Left.Val > root.Val || root.Left.Val < min {
+			return false
+		}
+	}
+
+	if root.Right != nil {
+		if root.Right.Val < root.Val || root.Right.Val > max {
+			return false
+		}
+	}
+
+	return true
 }
