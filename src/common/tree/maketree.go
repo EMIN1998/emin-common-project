@@ -1,5 +1,7 @@
 package tree
 
+import "fmt"
+
 type TreeNode struct {
 	Val   int
 	index int
@@ -31,5 +33,62 @@ func CreateTreeNode(nums []int) *TreeNode {
 			queue = append(queue, parentNode.Right)
 		}
 	}
+	return root
+}
+
+func (tree *TreeNode) PrintTree() {
+	head := tree
+	resp := LevelOrder(head)
+	fmt.Printf("BFS of Tree :%v", resp)
+}
+
+// 中后遍历构造二叉树
+// 后序遍历的最后一个节点为根节点
+// 每次递归将后序遍历中的根节点剪掉
+func makeTreeByMiddleAndLast(mid []int, last *[]int) *TreeNode {
+	if len(mid) == 0 || len(*last) == 0 {
+		return nil
+	}
+
+	rootValue := (*last)[len(*last)-1]
+	var index int
+	for _, v := range mid {
+		if v == rootValue {
+			break
+		}
+		index++
+	}
+
+	left := mid[0:index]
+	right := mid[index+1:]
+	*last = (*last)[0 : len(*last)-1]
+
+	rightTree := makeTreeByMiddleAndLast(right, last)
+	leftTree := makeTreeByMiddleAndLast(left, last)
+	root := &TreeNode{Val: rootValue, Right: rightTree, Left: leftTree}
+	return root
+}
+
+// 大佬题解
+func buildTree(inorder []int, postorder []int) *TreeNode {
+	if len(postorder) == 0 {
+		return nil
+	}
+
+	root := &TreeNode{
+		Val:   postorder[len(postorder)-1],
+		Left:  nil,
+		Right: nil,
+	}
+
+	i := 0
+	for ; i < len(inorder); i++ {
+		if root.Val == inorder[i] {
+			break
+		}
+	}
+
+	root.Left = buildTree(inorder[:i], postorder[:i]) // 不懂
+	root.Right = buildTree(inorder[i+1:], postorder[i:len(postorder)-1])
 	return root
 }
