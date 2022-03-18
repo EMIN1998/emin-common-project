@@ -119,6 +119,7 @@ func LevelOrder(root *TreeNode) [][]int {
 }
 
 // 判断是否为合格的平衡二叉树
+// 平衡二叉树左子树的所有节点比根节点小，右子树比根节点大
 func isValidBST(root *TreeNode) bool {
 	if root == nil {
 		return true
