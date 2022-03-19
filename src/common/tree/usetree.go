@@ -154,3 +154,29 @@ func isBST(root *TreeNode, max, min int) bool {
 
 	return true
 }
+
+// 中序遍历判断二叉搜索树
+// 二叉搜索树中序遍历后每个节点都比后一个节点小
+func isValidBSTV1(root *TreeNode) bool {
+	nodeStack := make([]*TreeNode, 0)
+	//nodeStack = append(nodeStack, root)
+	min := math.MinInt64
+	for len(nodeStack) != 0 || root != nil {
+		for root != nil {
+			nodeStack = append(nodeStack, root)
+			root = root.Left
+		}
+
+		root = nodeStack[len(nodeStack)-1]
+		nodeStack = nodeStack[0 : len(nodeStack)-1]
+
+		if root.Val <= min {
+			return false
+		}
+
+		min = root.Val
+		root = root.Right
+	}
+
+	return true
+}
