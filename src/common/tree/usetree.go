@@ -180,3 +180,22 @@ func isValidBSTV1(root *TreeNode) bool {
 
 	return true
 }
+
+// 1～n 组成多少个二叉搜索树
+// link：https://leetcode-cn.com/problems/unique-binary-search-trees/
+// 题目要求是计算不同二叉搜索树的个数。为此，我们可以定义两个函数：
+// G(n)G(n): 长度为 nn 的序列能构成的不同二叉搜索树的个数。
+// F(i, n)F(i,n): 以 i 为根、序列长度为 n 的不同二叉搜索树个数 (1≤i≤n)。
+// 动态规划
+func numTrees(n int) int {
+	g := make(map[int]int)
+	g[0], g[1] = 0, 1
+
+	for i := 2; i <= n; i++ { // i 为前i个节点
+		for j := 1; j <= i; j++ { // j 为根节点的下标
+			g[i] += g[j-1] * g[i-j]
+		}
+	}
+
+	return g[n]
+}

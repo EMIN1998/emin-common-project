@@ -36,6 +36,7 @@ func CreateTreeNode(nums []int) *TreeNode {
 	return root
 }
 
+// PrintTree BFS 打印
 func (tree *TreeNode) PrintTree() {
 	head := tree
 	resp := LevelOrder(head)
