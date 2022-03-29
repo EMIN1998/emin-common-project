@@ -1,15 +1,8 @@
 package tree
 
 import (
-	"fmt"
 	"math"
 )
-
-func Test_main() {
-	root := CreateTreeNode([]int{1, 2, 3, 4, 5})
-	res := diameterOfBinaryTree(root)
-	fmt.Println(res)
-}
 
 // 二叉树的直径
 func diameterOfBinaryTree(root *TreeNode) int {

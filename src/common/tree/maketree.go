@@ -93,3 +93,30 @@ func buildTree(inorder []int, postorder []int) *TreeNode {
 	root.Right = buildTree(inorder[i+1:], postorder[i:len(postorder)-1])
 	return root
 }
+
+// 先序中序构造二叉树
+func buildTreeV1(preorder []int, inorder []int) *TreeNode {
+	if len(inorder) == 0 {
+		return nil
+	}
+
+	root := &TreeNode{
+		Val: preorder[0],
+	}
+
+	idx := 0 // 找出跟节点在中序遍历中的位置，则左边是左子树，右边是右子树
+	for i, v := range inorder {
+		if v == root.Val {
+			idx = i
+			break
+		}
+	}
+
+	// 中序遍历中的分布[左子树，根节点，右子树]
+	// 根节点中序遍历的下标，在先序遍历中是左子树的最后一个节点，因此左子树在先序中的位置是[根节点，左子树，右子树] => 所以取preorder[1:idx+1]
+	// 后序遍历同理[左子树，右子树，根节点]
+	root.Left = buildTree(preorder[1:idx+1], inorder[:idx])
+	root.Right = buildTree(preorder[idx+1:], inorder[idx+1:])
+
+	return root
+}
