@@ -1,6 +1,8 @@
 package sublist
 
-import "common/utils"
+import (
+	"common/utils"
+)
 
 // 最长连续子数组长度
 func longestConsecutive(nums []int) int {
@@ -84,4 +86,38 @@ func LengthOfLongestSubstring(s string) int {
 	}
 
 	return maxLen
+}
+
+func subsets(nums []int) [][]int {
+	ans := make([][]int, 0)
+	track := make([]int, 0)
+	var backtrack func(start int)
+	backtrack = func(start int) {
+		ans = append(ans, track)
+		for i := start; i < len(nums); i++ {
+			track = append(track, nums[i])
+			backtrack(i + 1)
+			track = track[:len(track)-1]
+		}
+	}
+
+	backtrack(0)
+	return ans
+}
+
+func subses(nums []int) [][]int {
+	resp := make([][]int, 0)
+	track := make([]int, 0)
+	var backtracking func(start int)
+
+	backtracking = func(start int) {
+		resp = append(resp, append([]int{}, track...))
+		for i := start; i < len(nums); i++ {
+			track = append(track, nums[i])
+			backtracking(i + 1)
+			track = track[:len(track)-1]
+		}
+	}
+
+	return resp
 }
