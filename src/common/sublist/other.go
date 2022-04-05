@@ -105,12 +105,19 @@ func subsets(nums []int) [][]int {
 	return ans
 }
 
+// 子集和全排列对比：
+// 子集需要记录每个节点的结果
+// 全排列只在叶子节点进行记录
+// 因此track在子集函数中是全局变量
+// 在全排列中是传递的参数
 func subses(nums []int) [][]int {
 	resp := make([][]int, 0)
 	track := make([]int, 0)
 	var backtracking func(start int)
 
 	backtracking = func(start int) {
+		// 每次进行回溯前，当前节点就已经是一个子集了，先收集起来
+		// 这里防止指针传递
 		resp = append(resp, append([]int{}, track...))
 		for i := start; i < len(nums); i++ {
 			track = append(track, nums[i])
@@ -119,5 +126,34 @@ func subses(nums []int) [][]int {
 		}
 	}
 
+	return resp
+}
+
+// 全排列
+func permute(nums []int) [][]int {
+	resp := make([][]int, 0)
+	used := make([]bool, len(nums))
+
+	var backtracking func(track []int)
+	backtracking = func(track []int) {
+		if len(track) == len(nums) {
+			resp = append(resp, append([]int{}, track...))
+			return
+		}
+
+		for i, v := range nums {
+			if used[i] {
+				continue
+			}
+
+			track = append(track, v)
+			used[i] = true
+			backtracking(track)
+			track = track[:len(track)-1]
+			used[i] = false // 剪枝后该接节点已不再当前的路径中，但是下一条路径依然可以用
+		}
+	}
+
+	backtracking([]int{})
 	return resp
 }
