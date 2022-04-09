@@ -157,3 +157,25 @@ func permute(nums []int) [][]int {
 	backtracking([]int{})
 	return resp
 }
+
+// 生成括号
+func generateParenthesis(n int) []string {
+	res := make([]string, 0)
+	var df func(left, right int, item string)
+	df = func(left, right int, item string) {
+		if left == right && left == n {
+			res = append(res, item)
+			return
+		}
+
+		if left < right || left > n || right > n {
+			return
+		}
+
+		df(left+1, right, item+"(")
+		df(left, right+1, item+")")
+	}
+
+	df(0, 0, "")
+	return res
+}
