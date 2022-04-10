@@ -2,6 +2,7 @@ package array
 
 import "sort"
 
+//link：https://leetcode-cn.com/problems/3sum/
 func threeSum(nums []int) [][]int {
 	resp := make([][]int, 0)
 	sort.Ints(nums)
