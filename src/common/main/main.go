@@ -1,8 +1,9 @@
 package main
 
 import (
-	"common/trie"
+	"common/linklist"
 	"fmt"
+	"sync"
 )
 
 /**
@@ -124,35 +125,94 @@ func main() {
 	//fmt.Printf("Sleeping for %v...", *period)
 	//time.Sleep(*period)
 	//fmt.Println()
+	//funcName := "mainfunc"
+	//slice := make([]int, 0)
+	//for i := 0; i < 10; i++ {
+	//	slice = append(slice, i)
+	//}
+	//
+	//tmap := make(map[int]string)
+	//for i := 0; i < 5; i++ {
+	//	tmap[i] = fmt.Sprintf("mmm + %d", i)
+	//}
+	//
+	//fmt.Printf("[%s] before %p, %v\n", funcName, slice, slice)
+	//fmt.Printf("[%s] before %p\n", funcName, tmap)
+	//
+	//testfunc(slice, tmap)
+	//fmt.Printf("[%s] %p, %v\n", funcName, slice, slice)
+	//fmt.Printf("[%s] %p\n", funcName, tmap)
+	//for k, v := range tmap {
+	//	fmt.Println(k, " ==>", v)
+	//	tmap[k] = "test"
+	//}
 
-	obj := trie.Constructor()
-	op := []string{"insert", "search", "search", "startsWith", "insert", "search"}
-	//	[[],]
-	value := []string{"apple", "apple", "app", "app", "app", "app"}
-	resp := make([]*bool, 0)
-	for idx, s := range op {
-		switch s {
-		case "insert":
-			obj.Insert(value[idx])
-			resp = append(resp, nil)
-		case "search":
-			r := obj.Search(value[idx])
-			resp = append(resp, &r)
-		case "startsWith":
-			r := obj.StartsWith(value[idx])
-			resp = append(resp, &r)
-		}
-	}
-
-	for _, r := range resp {
-		if r == nil {
-			fmt.Println("null")
-			continue
-		}
-
-		p := *r
-		fmt.Println(p)
-	}
+	//fmt.Println(testinterface(nil))
+	//nestedDo()
+	linklist.Testdectfunc()
 }
 
-//var period = flag.Duration("period", 3*time.Second, "sleep period")
+func testinterface(p interface{}) bool {
+	if p == nil {
+		fmt.Println("==========")
+		return true
+	}
+
+	return false
+}
+
+//func nestedDo() {
+//	once := &sync.Once{}
+//	once.Do(func() {
+//		once.Do(func() {
+//			fmt.Println("test nestedDo")
+//		})
+//	})
+//}
+
+func panicDo() {
+	once := &sync.Once{}
+	defer func() {
+		if err := recover(); err != nil {
+			once.Do(func() {
+				fmt.Println("run in recover")
+			})
+		}
+	}()
+	once.Do(func() {
+		panic("panic i=0")
+	})
+
+}
+
+func testfunc(slice []int, tmap map[int]string) {
+	funcName := "testfunc"
+
+	for i := 11; i < 15; i++ {
+		slice = append(slice, i)
+	}
+
+	for k, v := range tmap {
+		fmt.Println(k, " ==>", v)
+		tmap[k] = "test"
+	}
+
+	for i := 0; i < 5; i++ {
+		slice[i] = slice[i] * 100
+	}
+
+	fmt.Printf("[%s] %p, %v\n", funcName, slice, slice)
+	fmt.Printf("[%s] %p\n", funcName, tmap)
+
+	return
+}
+
+func nestedDo() {
+	once1 := &sync.Once{}
+	once2 := &sync.Once{}
+	once1.Do(func() {
+		once2.Do(func() {
+			fmt.Println("test nestedDo")
+		})
+	})
+}
