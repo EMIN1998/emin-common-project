@@ -121,3 +121,27 @@ func RemoveNthFromEnd(head *ListNode, n int) *ListNode {
 	second.Next = second.Next.Next
 	return dummy.Next
 }
+
+// 题解：https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/142-huan-xing-lian-biao-ii-jian-hua-gong-shi-jia-2/
+// 寻找链表中的环
+func detectCycle(head *ListNode) *ListNode {
+	fast := head
+	slow := head
+
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+
+		if fast == slow {
+			tmp := head
+			for tmp != slow {
+				tmp = tmp.Next
+				slow = slow.Next
+			}
+
+			return tmp
+		}
+	}
+
+	return nil
+}
