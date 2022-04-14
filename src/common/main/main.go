@@ -1,7 +1,6 @@
 package main
 
 import (
-	"common/linklist"
 	"fmt"
 	"sync"
 )
@@ -143,13 +142,21 @@ func main() {
 	//fmt.Printf("[%s] %p, %v\n", funcName, slice, slice)
 	//fmt.Printf("[%s] %p\n", funcName, tmap)
 	//for k, v := range tmap {
+	//	//tmap[k] = "test"
 	//	fmt.Println(k, " ==>", v)
-	//	tmap[k] = "test"
 	//}
 
 	//fmt.Println(testinterface(nil))
 	//nestedDo()
-	linklist.Testdectfunc()
+
+	var i int
+	defer func() {
+		//i++
+		fmt.Printf("defer i:%d\n", i)
+	}()
+
+	i++
+	fmt.Printf("main i:%d\n", i)
 }
 
 func testinterface(p interface{}) bool {
@@ -193,8 +200,12 @@ func testfunc(slice []int, tmap map[int]string) {
 	}
 
 	for k, v := range tmap {
-		fmt.Println(k, " ==>", v)
-		tmap[k] = "test"
+		tmap[k] = "testtest"
+		fmt.Println("[", funcName, "]", k, " ==>", v)
+	}
+
+	for k, v := range tmap {
+		fmt.Println("[", funcName, "]", "after", k, " ==>", v)
 	}
 
 	for i := 0; i < 5; i++ {
