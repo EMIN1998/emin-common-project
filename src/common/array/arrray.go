@@ -1,6 +1,9 @@
 package array
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 //link：https://leetcode-cn.com/problems/3sum/
 func threeSum(nums []int) [][]int {
@@ -120,3 +123,67 @@ func max(a, b int) int {
 
 	return b
 }
+
+func topKFrequent(nums []int, k int) []int {
+	tmpMap := make(map[int]int, 0)
+	for _, v := range nums {
+		if _, ok := tmpMap[v]; !ok {
+			tmpMap[v] = 1
+		} else {
+			tmpMap[v]++
+		}
+	}
+
+	resp := make([]int, 0)
+	if len(tmpMap) <= k {
+		for k, _ := range tmpMap {
+			resp = append(resp, k)
+		}
+		return resp
+	}
+
+	arr := make([]int, 0)
+	for k, _ := range tmpMap {
+		arr = append(arr, k)
+	}
+
+	var quickSourt func(arr []int, k int) []int
+	quickSourt = func(arr []int, k int) []int {
+		fmt.Println(arr)
+		if k <= 0 {
+			return nil
+		}
+
+		if len(arr) < 2 {
+			return arr
+		}
+
+		mid := arr[0]
+		pre := make([]int, 0)
+		tail := make([]int,0)
+		for _, v := range arr[1:] {
+			if tmpMap[v] > tmpMap[mid] {
+				pre = append(pre, v)
+			} else {
+				tail = append(tail, v)
+			}
+		}
+
+		forw := quickSourt(pre, len(pre))
+		if len(forw) > k {
+			return forw[0:k]
+		}
+
+		back := quickSourt(tail, k-len(forw)-1)
+		quickResp := make([]int, 0)
+		quickResp = append(quickResp, forw...)
+		quickResp = append(quickResp, mid)
+		quickResp = append(quickResp, back...)
+		return quickResp[0:k]
+
+		//return append(append(append([]int{}, quickSourt(pre, k)...), mid), quickSourt(tail, k- len(pre))...)
+	}
+
+	return quickSourt(arr, k)
+}
+
