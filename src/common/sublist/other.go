@@ -179,3 +179,24 @@ func generateParenthesis(n int) []string {
 	df(0, 0, "")
 	return res
 }
+
+// link:https://leetcode-cn.com/problems/word-break/submissions/
+func wordBreak(s string, wordDict []string) bool {
+	dp := make([]bool, len(s)+1)
+	dp[0] = true
+	hasMap := make(map[string]bool)
+	for _, ss := range wordDict {
+		hasMap[ss] = true
+	}
+
+	for i := 0; i < len(s); i++ {
+		for j := i+1; j <= len(s); j++ {
+			str := s[i:j]
+			if dp[i] && hasMap[str] {
+				dp[j] = true
+			}
+		}
+	}
+
+	return dp[len(s)]
+}
