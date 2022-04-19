@@ -75,12 +75,38 @@ func Test_topKFrequent(t *testing.T) {
 		args args
 		want []int
 	}{
-		{name: "出现频率前N次的数组", args: args{nums: []int{5,3,1,1,1,3,73,1}, k: 1}, want: []int{1}},
+		{name: "出现频率前N次的数组", args: args{nums: []int{5, 3, 1, 1, 1, 3, 73, 1}, k: 1}, want: []int{1}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := topKFrequent(tt.args.nums, tt.args.k); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("topKFrequent() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_merge(t *testing.T) {
+	type args struct {
+		intervals [][]int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		{
+			name: "合并",
+			args: args{
+				intervals: [][]int{{1, 3}, {2, 6}, {8, 10}, {15, 18}},
+			},
+			want: [][]int{{1, 6}, {8, 10}, {15, 18}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := merge(tt.args.intervals); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("merge() = %v, want %v", got, tt.want)
 			}
 		})
 	}

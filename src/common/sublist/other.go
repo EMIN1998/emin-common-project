@@ -190,7 +190,7 @@ func wordBreak(s string, wordDict []string) bool {
 	}
 
 	for i := 0; i < len(s); i++ {
-		for j := i+1; j <= len(s); j++ {
+		for j := i + 1; j <= len(s); j++ {
 			str := s[i:j]
 			if dp[i] && hasMap[str] {
 				dp[j] = true

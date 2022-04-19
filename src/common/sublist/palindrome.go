@@ -80,3 +80,39 @@ func expendAndIndex(s string, i int, i2 int) (int, int) {
 
 	return i - 1, i2 + 1
 }
+
+// link:https://leetcode-cn.com/problems/palindromic-substrings/
+func countSubstrings(s string) int {
+	resp := 0
+	strMap := make([][]bool, len(s))
+
+	for i, _ := range s {
+		strMap[i] = make([]bool, len(s))
+		strMap[i][i] = true
+		resp++
+	}
+
+	// idy-idx + 1 = subLen
+	// idy = subLen + idx - 1
+
+	for subLen := 2; subLen <= len(s); subLen++ {
+		for idx := 0; idx < len(s); idx++ {
+			idy := subLen + idx - 1
+
+			if idy > len(s)-1 {
+				break
+			}
+
+			if s[idx] != s[idy] {
+				strMap[idx][idy] = false
+			} else {
+				if idy-idx+1 < 3 || strMap[idx+1][idy-1] {
+					strMap[idx][idy] = true
+					resp++
+				}
+			}
+		}
+	}
+
+	return resp
+}

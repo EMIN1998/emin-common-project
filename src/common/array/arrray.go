@@ -160,7 +160,7 @@ func topKFrequent(nums []int, k int) []int {
 
 		mid := arr[0]
 		pre := make([]int, 0)
-		tail := make([]int,0)
+		tail := make([]int, 0)
 		for _, v := range arr[1:] {
 			if tmpMap[v] > tmpMap[mid] {
 				pre = append(pre, v)
@@ -187,3 +187,30 @@ func topKFrequent(nums []int, k int) []int {
 	return quickSourt(arr, k)
 }
 
+// link:https://leetcode-cn.com/problems/merge-intervals/
+// 合并数组区间
+func merge(intervals [][]int) [][]int {
+	resp := make([][]int, 0)
+
+	sort.Slice(intervals, func(i, j int) bool {
+		if intervals[i][0] < intervals[j][0] {
+			return true
+		}
+
+		return false
+	})
+
+	resp = append(resp, intervals[0])
+	for _, v := range intervals {
+		last := resp[len(resp)-1]
+		currLeft := v[0]
+		currRight := v[1]
+		if last[1] > currLeft {
+			last[1] = max(currRight, last[1])
+		} else {
+			resp = append(resp, v)
+		}
+	}
+
+	return resp
+}

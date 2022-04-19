@@ -74,9 +74,9 @@ func Test_wordBreak(t *testing.T) {
 		args args
 		want bool
 	}{
-		{ name: "单词组成",args: args{s: "leetcode", wordDict: []string{"leet", "code"}}, want: true},
+		{name: "单词组成", args: args{s: "leetcode", wordDict: []string{"leet", "code"}}, want: true},
 	}
-		for _, tt := range tests {
+	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := wordBreak(tt.args.s, tt.args.wordDict); got != tt.want {
 				t.Errorf("wordBreak() = %v, want %v", got, tt.want)
