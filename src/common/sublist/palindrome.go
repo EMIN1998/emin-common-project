@@ -82,6 +82,7 @@ func expendAndIndex(s string, i int, i2 int) (int, int) {
 }
 
 // link:https://leetcode-cn.com/problems/palindromic-substrings/
+// 计算回文串数量
 func countSubstrings(s string) int {
 	resp := 0
 	strMap := make([][]bool, len(s))
