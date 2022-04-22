@@ -2,6 +2,8 @@ package sublist
 
 import (
 	"common/utils"
+	"math"
+	"sort"
 )
 
 // 最长连续子数组长度
@@ -199,4 +201,58 @@ func wordBreak(s string, wordDict []string) bool {
 	}
 
 	return dp[len(s)]
+}
+
+// 找出经过排列后可以将整个数组变为有序的无序数组
+// link:https://leetcode-cn.com/problems/shortest-unsorted-continuous-subarray/solution/zui-duan-wu-xu-lian-xu-zi-shu-zu-by-leet-yhlf/
+func findUnsortedSubarray(nums []int) int {
+	if sort.IntsAreSorted(nums) {
+		return 0
+	}
+
+	arr := append([]int{}, nums...)
+	sort.Ints(arr)
+
+	left, right := 0, len(nums)-1
+	for i := 0; i < len(nums); i++ {
+		if arr[i] != nums[i] {
+			break
+		}
+
+		left++
+	}
+
+	for arr[right] == nums[right] {
+		right--
+	}
+
+	return right - left + 1
+}
+
+func findUnsortedSubarrayV1(nums []int) int {
+	max := math.MinInt64
+	min := math.MaxInt64
+
+	nLen := len(nums)
+	left := -1
+	right := -1
+	for idx, num := range nums {
+		if num >= max {
+			max = num
+		} else {
+			right = idx
+		}
+
+		if nums[nLen-idx-1] <= min {
+			min = nums[nLen-idx-1]
+		} else {
+			left = nLen - idx - 1
+		}
+	}
+
+	if right == -1 {
+		return 0
+	}
+
+	return right - left + 1
 }
