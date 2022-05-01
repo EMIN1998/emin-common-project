@@ -214,3 +214,35 @@ func merge(intervals [][]int) [][]int {
 
 	return resp
 }
+
+// 寻找旋转数组
+// link: https://leetcode-cn.com/problems/search-in-rotated-sorted-array/
+func search(arr []int, target int) int {
+	arrLen := len(arr)
+	if arrLen == 0 {
+		return -1
+	}
+
+	pre := 0
+	sub := len(arr) - 1
+	for pre <= sub {
+		mid := (sub + pre) / 2
+		if arr[mid] == target {
+			return mid
+		} else if arr[pre] < arr[mid] { // 前半段有序
+			if target >= arr[pre] && target < arr[mid] {
+				sub = mid - 1
+			} else {
+				pre = mid + 1
+			}
+		} else { // 后半段有序
+			if mid+1 >= arrLen || (target >= arr[mid+1] && target <= arr[sub]) {
+				pre = mid + 1
+			} else {
+				sub = mid - 1
+			}
+		}
+	}
+
+	return -1
+}

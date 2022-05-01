@@ -111,3 +111,24 @@ func Test_merge(t *testing.T) {
 		})
 	}
 }
+
+func Test_search(t *testing.T) {
+	type args struct {
+		arr    []int
+		target int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{args: args{arr: []int{4, 5, 6, 7, 0, 1, 2}, target: 3}, want: -1},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := search(tt.args.arr, tt.args.target); got != tt.want {
+				t.Errorf("search() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
