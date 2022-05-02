@@ -246,3 +246,87 @@ func search(arr []int, target int) int {
 
 	return -1
 }
+
+// ==========================================================
+// 接雨水
+// link:https://leetcode-cn.com/problems/trapping-rain-water/submissions/
+func trap(height []int) int {
+	sum := 0
+	for idx, h := range height {
+		// 找出最小左墙
+		leftMax := 0
+		for i := idx - 1; i >= 0; i-- {
+			if height[i] > leftMax {
+				leftMax = height[i]
+			}
+		}
+
+		rightMax := 0
+		for j := idx + 1; j < len(height); j++ {
+			if height[j] > rightMax {
+				rightMax = height[j]
+			}
+		}
+
+		minSide := min(leftMax, rightMax)
+		if h < minSide {
+			cur := minSide - h
+			sum += cur
+		}
+	}
+
+	return sum
+}
+
+// 动态规划法
+func trapV1(height []int) int {
+	sum := 0
+	maxLeftSide := make([]int, len(height))
+	maxRightSide := make([]int, len(height))
+
+	for i := 1; i < len(height); i++ {
+		maxLeftSide[i] = max(maxLeftSide[i-1], height[i-1])
+	}
+
+	for j := len(height) - 2; j >= 0; j-- {
+		maxRightSide[j] = max(maxRightSide[j+1], height[j+1])
+	}
+
+	for k := 1; k < len(height); k++ {
+		minSide := min(maxLeftSide[k], maxRightSide[k])
+		if height[k] < minSide {
+			cur := minSide - height[k]
+			sum += cur
+		}
+	}
+
+	return sum
+}
+
+// 双指针
+func trapV2(height []int) int {
+	leftMax, rightMax := 0, 0
+	left, right := 0, len(height)-1
+	sum := 0
+	for left < right {
+		if height[left] < height[right] { // 右边比左边高 left++
+			if height[left] > leftMax {
+				leftMax = height[left]
+			} else {
+				sum += leftMax - height[left]
+			}
+			left++
+		} else { // 左边比右边高， right--
+			if height[right] > rightMax {
+				rightMax = height[right]
+			} else {
+				sum += rightMax - height[right]
+			}
+			right--
+		}
+	}
+
+	return sum
+}
+
+// ==========================================================
