@@ -284,16 +284,19 @@ func trapV1(height []int) int {
 	maxLeftSide := make([]int, len(height))
 	maxRightSide := make([]int, len(height))
 
+	// 找出每个节点最高的左墙
 	for i := 1; i < len(height); i++ {
 		maxLeftSide[i] = max(maxLeftSide[i-1], height[i-1])
 	}
 
+	// 找出每个节点最高的右墙
 	for j := len(height) - 2; j >= 0; j-- {
 		maxRightSide[j] = max(maxRightSide[j+1], height[j+1])
 	}
 
 	for k := 1; k < len(height); k++ {
 		minSide := min(maxLeftSide[k], maxRightSide[k])
+		// 只要当前节点比最矮的墙还要低，那么就可以接到雨水
 		if height[k] < minSide {
 			cur := minSide - height[k]
 			sum += cur
