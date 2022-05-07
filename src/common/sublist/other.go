@@ -318,3 +318,43 @@ func getCharactor(in string) string {
 
 	return ""
 }
+
+// ===================================================================================================
+// link:https://leetcode-cn.com/problems/next-permutation/submissions/
+// 找出元素排列紧邻的下一个排列
+// 1. 倒序找出最近的紧邻升序组合
+// 2. 找出nums[j:]中最小的，比nums[i]大的元素nums[target]
+// 3. 交换nums[i]和nums[target]
+// 4. 将nums[j:]进行从小到大排序
+func nextPermutation(nums []int) {
+	var i, j int
+	i = len(nums) - 2
+	j = i + 1
+	for i >= 0 {
+		if nums[i] >= nums[j] { // 找出第一个升序的相邻元素， 如果没找到说明已是最大的排列了
+			i--
+			j--
+			continue
+		}
+
+		break
+	}
+
+	sortIndex := j
+	if j == 0 { // 如果排列中的最后一个，下一个紧邻的就是第一个排列组合
+		i = 0
+		j = len(nums) - 1
+		sortIndex = i + 1
+	}
+
+	minIdx := j
+	for idx, v := range nums[j:] {
+		if v < nums[minIdx] && v > nums[i] {
+			minIdx = idx + j
+		}
+	}
+
+	nums[i], nums[minIdx] = nums[minIdx], nums[i]
+
+	sort.Ints(nums[sortIndex:])
+}
