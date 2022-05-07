@@ -4,6 +4,7 @@ import (
 	"common/utils"
 	"math"
 	"sort"
+	"strings"
 )
 
 // 最长连续子数组长度
@@ -255,4 +256,65 @@ func findUnsortedSubarrayV1(nums []int) int {
 	}
 
 	return right - left + 1
+}
+
+// ===================================================================================================
+// 回溯
+// 根据数字和它对应的字母进行排列
+// link: https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/submissions/
+func letterCombinations(digits string) []string {
+	if len(digits) == 0 {
+		return []string{}
+	}
+
+	digitList := strings.Split(digits, "")
+	resp := make([]string, 0)
+
+	tmpRes := ""
+	var backTracking = func(index int) {}
+	backTracking = func(index int) {
+		if index == len(digits) {
+			resp = append(resp, tmpRes)
+			return
+		}
+
+		digit := digitList[index]
+		for _, digit := range strings.Split(getCharactor(digit), "") {
+			tmpRes += digit
+			backTracking(index + 1)
+			tmpRes = tmpRes[:len(tmpRes)-1]
+		}
+	}
+
+	backTracking(0)
+
+	return resp
+}
+
+func getCharactor(in string) string {
+
+	switch in {
+	case "1":
+		return ""
+	case "2":
+		return "abc"
+	case "3":
+		return "def"
+	case "4":
+		return "ghi"
+	case "5":
+		return "jkl"
+	case "6":
+		return "mno"
+	case "7":
+		return "pqrs"
+	case "8":
+		return "tuv"
+	case "9":
+		return "wxyz"
+	case "0":
+		return ""
+	}
+
+	return ""
 }
