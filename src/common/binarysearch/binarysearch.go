@@ -81,3 +81,55 @@ func findMidNum(array []int) int {
 	return resp
 
 }
+
+// 找出target的范围
+// link：https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/
+// 34. 在排序数组中查找元素的第一个和最后一个位置
+func searchRange(nums []int, target int) []int {
+	if len(nums) == 0 || nums[0] > target || nums[len(nums)-1] < target {
+		return []int{-1, -1}
+	}
+
+	pre := 0
+	sub := len(nums) - 1
+	first, last := len(nums), -1
+	for pre <= sub {
+		mid := (pre + sub) / 2
+
+		if nums[mid] == target {
+			if mid > last {
+				last = mid
+			}
+
+			if mid < first {
+				first = mid
+			}
+
+			for i := 1; mid-i >= pre && nums[mid-i] == target; i++ {
+				first--
+			}
+
+			for i := 1; mid+i <= sub && nums[mid+i] == target; i++ {
+				last++
+			}
+
+			break
+		} else {
+			if nums[mid] < target {
+				pre = mid + 1
+			} else {
+				sub = mid - 1
+			}
+		}
+	}
+
+	if first == len(nums) {
+		first = last
+	}
+
+	if last == -1 {
+		last = first
+	}
+
+	return []int{first, last}
+}
