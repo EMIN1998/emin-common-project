@@ -1,5 +1,25 @@
 package binarysearch
 
+// 二分查找模版：
+//func binarySearch(nums []int, target int) int {
+//	left, right := 0, len(nums)-1
+//	for left<= right {
+// 		// 这里是为了left和right过大直接相加造成溢出
+//		mid := left + (right - left) / 2
+//		if nums[mid] == target {
+//			...
+//		} else if nums[mid] < target {
+//			left = ...
+//		} else if nums[mid] > target {
+//			right = ...
+//		}
+//	}
+//
+//	return ...;
+//}
+
+//参考链接：https://labuladong.github.io/algo/2/18/26/
+
 //给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，
 //如果目标值存在返回下标，否则返回 -1。
 //
@@ -133,3 +153,53 @@ func searchRange(nums []int, target int) []int {
 
 	return []int{first, last}
 }
+
+// ==============================================================================================
+// 优化写法
+// link：https://labuladong.github.io/algo/2/18/26/
+func searchRangeOptimize(nums []int, target int) []int {
+	return []int{findLeftBound(nums, target), findRightBound(nums, target)}
+}
+
+func findLeftBound(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			right = mid - 1
+		} else if nums[mid] < target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		}
+	}
+
+	if left > len(nums)-1 || nums[left] != target {
+		return -1
+	}
+
+	return left
+}
+
+func findRightBound(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			left = mid + 1
+		} else if nums[mid] < target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		}
+	}
+
+	if right < 0 || nums[right] != target {
+		return -1
+	}
+
+	return right
+}
+
+// ==============================================================================================
