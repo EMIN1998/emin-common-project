@@ -51,7 +51,7 @@ func reverseLinkList(head *ListNode) *ListNode {
 		return head
 	}
 
-	last := reverseLinkList(head)
+	last := reverseLinkList(head.Next)
 
 	head.Next.Next = head
 	head.Next = nil
