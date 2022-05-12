@@ -358,3 +358,35 @@ func nextPermutation(nums []int) {
 
 	sort.Ints(nums[sortIndex:])
 }
+
+// ===================================================================================================
+// link:https://leetcode-cn.com/problems/combination-sum/
+// 组合总和
+func combinationSum(candidates []int, target int) [][]int {
+	if len(candidates) == 0 {
+		return nil
+	}
+
+	resp := make([][]int, 0)
+	tmpRes := make([]int, 0)
+	var backtracking = func(surplus int, currCandidates []int) {}
+	backtracking = func(surplus int, currCandidates []int) {
+		if surplus <= 0 {
+			if surplus == 0 {
+				resp = append(resp, append([]int{}, tmpRes...))
+			}
+
+			return
+		}
+
+		for idx, v := range currCandidates {
+			tmpRes = append(tmpRes, v)
+			backtracking(surplus-v, currCandidates[idx:])
+			tmpRes = tmpRes[:len(tmpRes)-1]
+		}
+	}
+
+	backtracking(target, candidates)
+
+	return resp
+}
