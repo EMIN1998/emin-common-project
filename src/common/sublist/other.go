@@ -390,3 +390,85 @@ func combinationSum(candidates []int, target int) [][]int {
 
 	return resp
 }
+
+// ===================================================================================================
+// link:https://leetcode.cn/problems/word-search/
+// 79. 单词搜索
+func exist(board [][]byte, word string) bool {
+	targetList := make([]*point, 0)
+	m := len(board)
+	n := len(board[0])
+	for idx, rows := range board {
+		for idy, v := range rows {
+			if v == word[0] {
+				targetList = append(targetList, &point{x: idx, y: idy})
+			}
+		}
+	}
+
+	currIndex := 0
+	used := make([][]bool, m)
+	for i := 0; i < m; i++ {
+		used[i] = make([]bool, n)
+	}
+
+	var backtacking func(row, col int) bool
+	backtacking = func(row, col int) bool {
+		found := false
+
+		if board[row][col] == word[currIndex] {
+			currIndex++
+			if currIndex == len(word) {
+				return true
+			}
+
+			for _, v := range getSurround(row, col) {
+				if v.x >= m || v.x < 0 || v.y < 0 || v.y >= n {
+					continue
+				}
+
+				if used[v.x][v.y] {
+					continue
+				}
+				used[v.x][v.y] = true
+				found = backtacking(v.x, v.y)
+				if found {
+					return true
+				}
+
+				used[v.x][v.y] = false
+			}
+			currIndex--
+		}
+
+		return found
+	}
+
+	for _, v := range targetList {
+		used[v.x][v.y] = true
+		if !backtacking(v.x, v.y) {
+			used[v.x][v.y] = false
+			continue
+		}
+
+		return true
+	}
+
+	return false
+}
+
+type point struct {
+	x int
+	y int
+}
+
+func getSurround(x, y int) []*point {
+	resp := make([]*point, 0)
+
+	resp = append(resp, &point{x - 1, y})
+	resp = append(resp, &point{x, y - 1})
+	resp = append(resp, &point{x + 1, y})
+	resp = append(resp, &point{x, y + 1})
+
+	return resp
+}
