@@ -333,3 +333,72 @@ func trapV2(height []int) int {
 }
 
 // ==========================================================
+// link :https://leetcode-cn.com/problems/minimum-path-sum/
+// 64. 最小路径和
+func minPathSum(grid [][]int) int {
+	if len(grid) == 0 {
+		return 0
+	}
+
+	resMap := make([][]int, len(grid))
+	m := len(grid) - 1    // 这是列
+	n := len(grid[0]) - 1 // 这是行
+
+	for i := 0; i < len(grid); i++ {
+		resMap[i] = make([]int, len(grid[0]))
+	}
+
+	resMap[0][0] = grid[0][0]
+	for i := 1; i <= m; i++ {
+		resMap[0][i] = resMap[0][i-1] + grid[0][i]
+	}
+
+	if len(grid) == 1 {
+		return resMap[0][n]
+	}
+
+	for j := 1; j <= n; j++ {
+		resMap[j][0] = resMap[j-1][0] + grid[j][0]
+	}
+
+	if len(grid[0]) == 1 {
+		return resMap[m][0]
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			resMap[i][j] = min(resMap[i-1][j], resMap[i][j-1]) + grid[i][j]
+		}
+	}
+
+	return resMap[m][n]
+}
+
+// link : https://leetcode-cn.com/problems/unique-paths/
+// 62. 不同路径
+func uniquePaths(m int, n int) int {
+	if m == 0 && n == 0 {
+		return 0
+	}
+
+	resMap := make([][]int, m)
+	for i := 0; i < m; i++ {
+		resMap[i] = make([]int, n)
+	}
+
+	for i := 0; i < m; i++ {
+		resMap[i][0] = 1
+	}
+
+	for j := 0; j < n; j++ {
+		resMap[0][j] = 1
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			resMap[i][j] = resMap[i-1][j] + resMap[i][j-1]
+		}
+	}
+
+	return resMap[m-1][n-1]
+}

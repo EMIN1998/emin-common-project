@@ -154,3 +154,47 @@ func Test_trap(t *testing.T) {
 		})
 	}
 }
+
+func Test_minPathSum(t *testing.T) {
+	type args struct {
+		grid [][]int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{args: args{grid: [][]int{{1, 2, 3}, {4, 5, 6}}}, want: 12},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := minPathSum(tt.args.grid); got != tt.want {
+				t.Errorf("minPathSum() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_uniquePaths(t *testing.T) {
+	type args struct {
+		m int
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{args: args{
+			m: 3,
+			n: 7,
+		}, want: 28},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := uniquePaths(tt.args.m, tt.args.n); got != tt.want {
+				t.Errorf("uniquePaths() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
