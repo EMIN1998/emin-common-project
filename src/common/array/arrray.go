@@ -447,3 +447,18 @@ func canJump(nums []int) bool {
 
 	return true
 }
+
+// ====================================================================================================================
+// link:https://leetcode.cn/problems/single-number/solution/zhi-chu-xian-yi-ci-de-yuan-su-by-disco-2-q634/
+// 136. 只出现一次的数字, 用异或
+// a^0=a。
+// a^0a=0。
+// 异或运算满足交换律和结合律
+
+func singleNumber(nums []int) int {
+	single := 0
+	for _, num := range nums {
+		single ^= num
+	}
+	return single
+}
