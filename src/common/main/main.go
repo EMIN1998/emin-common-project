@@ -45,23 +45,43 @@ func countBits(n int) []int {
 }
 
 func main() {
-	//slice := make([]int, 0)
+	//slice := make([]int, 0, 10)
 	//for i := 0; i < 5; i++ {
 	//	slice = append(slice, i)
 	//}
+	//
+	//tmpSlice := make([]int, 0, 10)
+	//for i := 0; i < 5; i++ {
+	//	tmpSlice = append(slice, i)
+	//}
+	//fmt.Printf(" tmpSlice after %p, value: %v \n", &tmpSlice, tmpSlice)
 	//fmt.Printf("before %p, value : %v\n", &slice, slice)
 	//try(slice)
 	//
 	//fmt.Printf("after %p, value: %v \n", &slice, slice)
+	var i = 1
+	resp := tryDefer(i)
+	fmt.Printf("======> %d", resp)
 
-	fmt.Printf("%v", 5/2)
+}
+
+func tryDefer(i int) int {
+	defer func() {
+		i = i + 10
+	}()
+
+	return i
 }
 
 func try(slice []int) {
 	fmt.Printf("try before %p, value: %v \n", &slice, slice)
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 20; i++ {
 		slice = append(slice, i)
 		//atomic.AddInt32()
+	}
+
+	for i := 0; i < 5; i++ {
+		slice[i] += 100
 	}
 
 	fmt.Printf("try %p, value: %v \n", &slice, slice)
