@@ -421,3 +421,29 @@ func rotate(matrix [][]int) {
 		}
 	}
 }
+
+// ====================================================================================================================
+// link : https://leetcode.cn/problems/jump-game/solution/55-by-ikaruga/
+// 55. 跳跃游戏
+// 思路：从倒数第二个元素开始，算该元素能否到达下一个下标，如果可以就把下标往前推
+func canJump(nums []int) bool {
+	if len(nums) <= 1 {
+		return true
+	}
+
+	// dp := make([]int, len(nums)-1)
+	m := len(nums) - 1
+	for i := m - 1; i >= 0; i-- {
+		if i+nums[i] < m {
+			continue
+		}
+
+		m = i
+	}
+
+	if m > 0 {
+		return false
+	}
+
+	return true
+}
