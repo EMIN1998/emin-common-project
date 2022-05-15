@@ -203,3 +203,22 @@ func findRightBound(nums []int, target int) int {
 }
 
 // ==============================================================================================
+// 240. 搜索二维矩阵 II
+// link:https://leetcode.cn/problems/search-a-2d-matrix-ii/
+// 思路：以右上角为开始节点
+// 如果target > 该节点， 说明该行中没有比target更大的数了，所以行往下降
+// 如果target < 该节点， 说明该列中最小的值都比target大，所以列要往前移
+func searchMatrix(matrix [][]int, target int) bool {
+	x, y := 0, len(matrix[0])-1
+	for x <= len(matrix)-1 && y >= 0 {
+		if matrix[x][y] == target {
+			return true
+		} else if matrix[x][y] > target {
+			y--
+		} else if matrix[x][y] < target {
+			x++
+		}
+	}
+
+	return false
+}
