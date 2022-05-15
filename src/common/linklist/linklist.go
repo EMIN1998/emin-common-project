@@ -147,3 +147,31 @@ func detectCycle(head *ListNode) *ListNode {
 
 	return nil
 }
+
+// ====================================================================================================================
+// 160. 相交链表 --- 双指针法
+// link:https://leetcode.cn/problems/intersection-of-two-linked-lists/
+// 思路：
+// 指针a 遍历A（a+c个节点，c为共同节点的长度），如果遍历完就指向B（b+c个节点，c为共同节点的长度）继续遍历
+// 指针b同理
+// 当两个指针分别遍历完A和B后 a和b都遍历了a+b+c个节点
+// 因此a和b相遇在相交节点或者分别到两个节点的末尾空节点
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+	a, b := headA, headB
+	for a != b {
+		if a != nil {
+			a = a.Next
+		} else {
+			a = headB
+		}
+
+		if b != nil {
+			b = b.Next
+		} else {
+			b = headA
+		}
+
+	}
+
+	return a
+}

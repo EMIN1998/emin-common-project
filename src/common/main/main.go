@@ -59,9 +59,16 @@ func main() {
 	//try(slice)
 	//
 	//fmt.Printf("after %p, value: %v \n", &slice, slice)
-	var i = 1
-	resp := tryDefer(i)
-	fmt.Printf("======> %d", resp)
+	map1 := make(map[int]struct{})
+	map2 := make(map[int]struct{})
+
+	for i := 0; i < 10; i++ {
+		map1[i] = struct{}{}
+	}
+
+	for i := 5; i < 15; i++ {
+		map2[i] = struct{}{}
+	}
 
 }
 
