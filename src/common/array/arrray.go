@@ -454,11 +454,132 @@ func canJump(nums []int) bool {
 // a^0=a。
 // a^0a=0。
 // 异或运算满足交换律和结合律
-
 func singleNumber(nums []int) int {
 	single := 0
 	for _, num := range nums {
 		single ^= num
 	}
 	return single
+}
+
+// ====================================================================================================================
+// 200.岛屿数量
+// link:https://leetcode.cn/problems/number-of-islands/
+func numIslands(grid [][]byte) int {
+	var sum int
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[0]); j++ {
+			if grid[i][j] == '2' {
+				continue
+			}
+
+			if grid[i][j] == '1' {
+				grid[i][j] = 2
+			}
+
+			var df func(m, n int)
+			hasIsland := false
+			df = func(m, n int) {
+				if grid[m][n] == '0' || grid[m][n] == '2' {
+					return
+				}
+
+				hasIsland = true
+				grid[m][n] = '2'
+				fmt.Printf("%v-%v, %v~%v\n", m, n, i, j)
+				sur := getSurround(m, n, len(grid), len(grid[0]))
+				for _, v := range sur {
+					df(v.x, v.y)
+				}
+
+				return
+			}
+
+			df(i, j)
+			if hasIsland {
+				sum++
+			}
+			hasIsland = false
+		}
+	}
+
+	return sum
+}
+
+type point struct {
+	x int
+	y int
+}
+
+func getSurround(i, j int, rowlen, colLen int) []*point {
+	res := make([]*point, 0)
+	if i-1 >= 0 {
+		res = append(res, &point{
+			x: i - 1,
+			y: j,
+		})
+	}
+
+	if j-1 >= 0 {
+		res = append(res, &point{
+			x: i,
+			y: j - 1,
+		})
+	}
+
+	if i+1 < rowlen {
+		res = append(res, &point{
+			x: i + 1,
+			y: j,
+		})
+	}
+
+	if j+1 < colLen {
+		res = append(res, &point{
+			x: i,
+			y: j + 1,
+		})
+	}
+
+	return res
+}
+
+// ====================================================================================================================
+// 207.课程表
+// link:https://leetcode.cn/problems/course-schedule/
+func canFinish(numCourses int, prerequisites [][]int) bool {
+	var (
+		edges   = make([][]int, numCourses)
+		visited = make([]int, numCourses)
+		//result  []int
+		valid = true
+		dfs   func(u int)
+	)
+
+	dfs = func(u int) {
+		visited[u] = 1
+		for _, v := range edges[u] {
+			if visited[v] == 0 {
+				dfs(v)
+				if !valid {
+					return
+				}
+			} else if visited[v] == 1 {
+				valid = false
+				return
+			}
+		}
+		visited[u] = 2
+	}
+
+	for _, info := range prerequisites {
+		edges[info[1]] = append(edges[info[1]], info[0])
+	}
+
+	for i := 0; i < numCourses && valid; i++ {
+		if visited[i] == 0 {
+			dfs(i)
+		}
+	}
+	return valid
 }

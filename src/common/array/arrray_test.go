@@ -218,3 +218,47 @@ func Test_canJump(t *testing.T) {
 		})
 	}
 }
+
+func Test_numIslands(t *testing.T) {
+	type args struct {
+		grid [][]byte
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{args: args{[][]byte{{1}, {1}}}, want: 1},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := numIslands(tt.args.grid); got != tt.want {
+				t.Errorf("numIslands() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_canFinish(t *testing.T) {
+	type args struct {
+		numCourses    int
+		prerequisites [][]int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{name: "can finish", args: args{
+			numCourses:    2,
+			prerequisites: [][]int{{1, 0}},
+		}, want: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := canFinish(tt.args.numCourses, tt.args.prerequisites); got != tt.want {
+				t.Errorf("canFinish() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
