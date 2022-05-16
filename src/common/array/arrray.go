@@ -583,3 +583,29 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 	}
 	return valid
 }
+
+// https://leetcode.cn/problems/find-the-duplicate-number/submissions/
+// 287. 寻找重复数
+// 思路：
+// slow, fast 就是指针本身
+// nums[slow] 就是head.Next
+// nums[nums[fast]] 就是head.Next.Next
+func findDuplicate(nums []int) int {
+	slow, fast := 0, 0
+	for fast <= len(nums)-1 && nums[fast] <= len(nums)-1 {
+		slow = nums[slow]
+		fast = nums[nums[fast]]
+
+		if slow == fast {
+			pre := 0
+			for pre != slow {
+				pre = nums[pre]
+				slow = nums[slow]
+			}
+
+			return pre
+		}
+	}
+
+	return -1
+}
